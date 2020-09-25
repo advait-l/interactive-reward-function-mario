@@ -9,7 +9,7 @@ var valueline = d3.line()
    .y(function(d) { return y(d.population); });
 
 // Append SVG attributes
-var svg = d3.select("body").append("svg")
+var svg1 = d3.select("body").append("svg")
    .attr("width", width + margin.left + margin.right)
    .attr("height", height + margin.top + margin.bottom)
    .style("border", "1px solid black")
@@ -34,18 +34,18 @@ dataset.then(function(data) {
             })
         };
     });
-    console.log("Column headers", data.columns);
-    console.log("Column headers without date", data.columns.slice(1));
-    // returns the sliced dataset
+    //console.log("Column headers", data.columns);
+    //console.log("Column headers without date", data.columns.slice(1));
+    //// returns the sliced dataset
     console.log("Slices",slices);
-    // returns the first slice
+    //// returns the first slice
     console.log("First slice",slices[0]);
-    // returns the array in the first slice
-    console.log("A array",slices[0].values);
-    // returns the date of the first row in the first slice
-    console.log("Date element",slices[0].values[0].date);
-    // returns the array's length
-    console.log("Array length",(slices[0].values).length);
+    //// returns the array in the first slice
+    //console.log("A array",slices[0].values);
+    //// returns the date of the first row in the first slice
+    //console.log("Date element",slices[0].values[0].date);
+    //// returns the array's length
+    //console.log("Array length",(slices[0].values).length);
 
     // Scales preparation
     const xScale = d3.scaleTime().range([0,width]);
@@ -72,12 +72,12 @@ dataset.then(function(data) {
     //const xaxis = d3.axisBottom().scale(xScale);
 
     // Axis drawing
-    svg.append("g")
+    svg1.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xaxis);
 
-    svg.append("g")
+    svg1.append("g")
         .attr("class", "axis")
         .call(yaxis)
         .append("text")
@@ -93,7 +93,7 @@ dataset.then(function(data) {
     .y(function(d) { return yScale(d.measurement); });
 
     // Lines drawing
-    const lines = svg.selectAll("lines")
+    const lines = svg1.selectAll("lines")
     .data(slices)
     .enter()
     .append("g");
