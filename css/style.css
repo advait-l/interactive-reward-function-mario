@@ -3,10 +3,17 @@
   src: url('../fonts/SuperMario256.ttf');
 }
 
+
+
+.vis-wrapper{
+    margin: 40px;
+    background-color: red;
+}
+
 .start-screen {
   width: 1280px;
   height: 530px;
-  margin: 40px;
+  margin: 20px;
   border: 1px solid black;
   background: url('../images/start-screen.png');
   position: relative;
@@ -30,14 +37,14 @@
   border-top: none;
   background: url('../images/bg.png');
   display: none;
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .score-wrapper {
   padding-left: 40px;
   width: 1240px;
-  margin-left: 40px;
-  margin-top: 40px;
+  margin-left: 20px;
+  margin-top: 20px;
   height: 50px;
   display: none;
   border: 1px solid black;
@@ -353,4 +360,8 @@
 
 .fb-comments {
   margin: 0 auto;
+}
+
+svg{
+    background-color: red;
 }

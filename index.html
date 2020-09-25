@@ -2,7 +2,8 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=1280" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mario Maker</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/reset.css">
@@ -14,6 +15,14 @@
   <div class="main-wrapper">
     <canvas class="game-screen"></canvas>
   </div>
+
+  <div id="container" class="svg-container"></div>
+
+
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+  <script src="js/libraries/html2canvas.min.js"></script>
 
   <script src="js/View.js"></script>
   <script src="js/GameUI.js"></script>
@@ -35,6 +44,7 @@
 
   <script src="js/Preloader.js"></script>
 
+  <script src="js/coin_plot.js"></script>
 </body>
 
 </html>

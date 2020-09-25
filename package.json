@@ -1,0 +1,24 @@
+{
+  "name": "mario",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/advait-l/interactive-reward-function-mario.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/advait-l/interactive-reward-function-mario/issues"
+  },
+  "homepage": "https://github.com/advait-l/interactive-reward-function-mario#readme",
+  "dependencies": {
+    "@tensorflow/tfjs": "^2.3.0",
+    "bootstrap": "^4.5.2"
+  }
+}
