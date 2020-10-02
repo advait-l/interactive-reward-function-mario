@@ -36,6 +36,13 @@ function MarioGame() {
   var instructionTick = 0; //showing instructions counter
   var that = this;
 
+  // Visulizations
+  var loopCount = 0;
+  var coinPlot;
+  var enemyKillPlot;
+  var distancePlot;
+  var rewardPlot;
+
   this.init = function(levelMaps, level) {
     height = 480;
     maxWidth = 0;
@@ -77,6 +84,26 @@ function MarioGame() {
     that.calculateMaxWidth();
     that.bindKeyPress();
     that.startGame();
+
+    if(!coinPlot){
+        coinPlot = new CoinPlot();
+        coinPlot.draw();
+    }
+    
+    if(!enemyKillPlot){
+        enemyKillPlot = new EnemyKillPlot();
+        enemyKillPlot.draw();
+    }
+
+    if(!distancePlot){
+        distancePlot = new DistancePlot();
+        distancePlot.draw();
+    }
+
+    if(!rewardPlot){
+        rewardPlot = new RewardPlot();
+        rewardPlot.draw();
+    }
   };
 
   that.calculateMaxWidth = function() {
@@ -174,6 +201,8 @@ function MarioGame() {
 
   //Main Game Loop
   this.startGame = function() {
+    loopCount += 1;
+
     animationID = window.requestAnimationFrame(that.startGame);
 
     gameUI.clear(0, 0, maxWidth, height);
@@ -208,6 +237,20 @@ function MarioGame() {
     that.updateMario();
     that.wallCollision();
     marioInGround = mario.grounded; //for use with flag sliding
+
+    //console.log(score.coinScore);
+    //console.log(loopCount);
+    var coins = { frame: loopCount, coins: score.coinScore };
+    
+    //that.coinPlot.draw(coins);
+    //console.log(coinData);
+    //console.log(that.coinPlot);
+    //that.coinPlot.setData({
+    //    frame: loopCount,
+    //    coins: score.coinScore
+    //});
+
+
   };
 
   this.showInstructions = function() {

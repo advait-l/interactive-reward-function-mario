@@ -23,6 +23,9 @@ var MarioMaker = (function() {
     var editor;
     var createdLevels;
 
+    // Visualizations
+    var coinPlot;
+
     var that = this;
 
     this.init = function() {
@@ -38,6 +41,7 @@ var MarioMaker = (function() {
       startGameButton = view.create('button');
       createdLevelsButton = view.create('div');
       backToMenuBtn = view.create('button');
+      
 
       view.addClass(btnWrapper, 'btn-wrapper');
       view.addClass(startScreen, 'start-screen');
@@ -46,12 +50,17 @@ var MarioMaker = (function() {
       view.addClass(createdLevelsButton, 'created-btn');
       view.addClass(backToMenuBtn, 'back-btn');
 
+      // Visualizations
+      svgContainer = view.create('div');
+      view.addClass(svgContainer, 'svg-container');
+
       view.append(startScreen, editorButton);
       view.append(startScreen, startGameButton);
       view.append(startScreen, createdLevelsButton);
       view.append(btnWrapper, backToMenuBtn);
       view.append(mainWrapper, startScreen);
       view.append(mainWrapper, btnWrapper);
+      view.append(mainWrapper, svgContainer);
 
       editorButton.onclick = that.startEditor;
 
@@ -79,6 +88,7 @@ var MarioMaker = (function() {
 
     this.startGame = function(levelMap) {
       view.style(backToMenuBtn, { display: 'block' });
+      view.style(svgContainer, {display: 'block'});
 
       marioGame.clearInstances();
       marioGame.init(levelMap, 1); //initiate level 1 of map

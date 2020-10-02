@@ -30,7 +30,7 @@ var GameUI = (function() {
     };
 
     this.show = function() {
-      canvas.style.display = 'block';
+      canvas.style.display = 'inline-block';
     };
 
     this.hide = function() {

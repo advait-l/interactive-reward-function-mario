@@ -5,10 +5,6 @@
 
 
 
-.vis-wrapper{
-    margin: 40px;
-    background-color: red;
-}
 
 .start-screen {
   width: 1280px;
@@ -31,8 +27,8 @@
 }
 
 .game-screen {
-  width: 1280px;
-  height: 480px;
+  width: 1170px;
+  height: 400px;
   border: 1px solid black;
   border-top: none;
   background: url('../images/bg.png');
@@ -42,7 +38,7 @@
 
 .score-wrapper {
   padding-left: 40px;
-  width: 1240px;
+  width: 1130px;
   margin-left: 20px;
   margin-top: 20px;
   height: 50px;
@@ -297,12 +293,12 @@
 }
 
 .back-btn {
+  margin-top: 40px;
   width: 200px;
   height: 50px;
   background: url('../images/back-btn.png');
   color: #ffffff;
   border: 2px solid black;
-  margin: 10px;
   display: none;
 }
 
@@ -337,7 +333,8 @@
 .btn-wrapper {
   width: 1280px;
   height: 100px;
-  margin: 0 auto;
+  margin-top: 20px; 
+  margin-left: 20px; 
 }
 
 .no-maps {
@@ -362,6 +359,27 @@
   margin: 0 auto;
 }
 
-svg{
-    background-color: red;
+.svg-container{
+    margin-top: 20px;
+    height: 250px;
+}
+
+.axis line{
+    stroke: #706f6f;
+    stroke-width: 0.5;
+    shape-rendering: crispEdges;
+}
+
+/* axis contour */
+.axis path {
+    stroke: #000;
+    stroke-width: 0.7;
+    shape-rendering: crispEdges;
+}
+
+/* axis text */
+.axis text {
+    fill: #2b2929;
+    font-family: Georgia;
+    font-size: 120%;
 }

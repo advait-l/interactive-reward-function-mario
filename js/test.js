@@ -1,3 +1,3 @@
-env = new Environment();
-
-env.getFrame();
+//TestPlot1();
+//CoinPlot();
+//TestPlot2();
