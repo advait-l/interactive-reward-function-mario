@@ -52,6 +52,10 @@
   color: #ffffff;
 }
 
+.metric-wrapper{
+    display: inline-block;
+}
+
 .life-count {
   background: url('../images/mario-head.png') left center no-repeat;
   width: 100px;

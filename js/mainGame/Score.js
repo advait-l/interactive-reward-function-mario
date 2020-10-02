@@ -68,7 +68,7 @@ function Score() {
   };
 
   this.displayScore = function() {
-    view.style(scoreWrapper, { display: 'block', background: '#add1f3' });
+    view.style(scoreWrapper, { display: 'inline-block', background: '#add1f3' });
   };
 
   this.hideScore = function() {
