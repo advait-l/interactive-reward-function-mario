@@ -6,7 +6,6 @@ function RewardPlot() {
 
     rewarddata = [];
 
-
     // Append SVG attributes
     var svg2 = d3.select(".svg-container").append("svg")
        .attr("width", width1 + margin1.left + margin1.right)
@@ -19,51 +18,51 @@ function RewardPlot() {
 
 
 
-        // Data preparation
-            var frames = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            var distance = [0, 10, 20, 25, 20, 15, 25, 30, 40, 35];
-            var coins = [0, 1, 1, 2, 3, 3, 4, 5, 7, 7];
-            var enemies = [0, 0, 0, 0, 0, 1, 1, 2, 2, 2];
+    // Data preparation
+    var frames = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var distance = [0, 10, 20, 25, 20, 15, 25, 30, 40, 35];
+    var coins = [0, 1, 1, 2, 3, 3, 4, 5, 7, 7];
+    var enemies = [0, 0, 0, 0, 0, 1, 1, 2, 2, 2];
 
-            // Weights
-            var Dweight = 1.0;
-            var Cweight = 5.0;
-            var Eweight = 10.0;
+    // Weights
+    var Dweight = 1.0;
+    var Cweight = 5.0;
+    var Eweight = 10.0;
 
-            reward = [];
-            for(let i = 0; i < frames.length; i++){
-                var rewardScore = Dweight * distance[i] + Cweight * coins[i] + Eweight * enemies[i];
-                reward.push(rewardScore);
-            }
-            //coindata.push(dataFromGame);
-            for( let i = 0; i < frames.length; i++){
-                rewarddata.push({
-                    frame: frames[i],
-                    reward: reward[i]
-                });
-            }
-            console.log(rewarddata);
+    reward = [];
+    for(let i = 0; i < frames.length; i++){
+        var rewardScore = Dweight * distance[i] + Cweight * coins[i] + Eweight * enemies[i];
+        reward.push(rewardScore);
+    }
+    //coindata.push(dataFromGame);
+    for( let i = 0; i < frames.length; i++){
+        rewarddata.push({
+            frame: frames[i],
+            reward: reward[i]
+        });
+    }
+    console.log(rewarddata);
 
-        /* PREPARATION */
-        // Scale preparation
-        const xScale = d3.scaleLinear().rangeRound([0, width1]);
-        const yScale = d3.scaleLinear().range([height1, 0]);
-        xScale.domain(d3.extent(rewarddata, function(d) { return +d.frame; }));
-        yScale.domain([0, d3.max(rewarddata, function(d) { return +d.reward; })]);
+    /* PREPARATION */
+    // Scale preparation
+    const xScale = d3.scaleLinear().rangeRound([0, width1]);
+    const yScale = d3.scaleLinear().range([height1, 0]);
+    xScale.domain(d3.extent(rewarddata, function(d) { return +d.frame; }));
+    yScale.domain([0, d3.max(rewarddata, function(d) { return +d.reward; })]);
 
-        // Axes preparation
-        const yaxis = d3.axisLeft()
-            //.ticks(+reward.length)
-            .scale(yScale);
+    // Axes preparation
+    const yaxis = d3.axisLeft()
+        //.ticks(+reward.length)
+        .scale(yScale);
 
-        const xaxis = d3.axisBottom()
-            //.ticks(data.length)
-            .scale(xScale);
+    const xaxis = d3.axisBottom()
+        //.ticks(data.length)
+        .scale(xScale);
 
-        // Lines preparation
-        const line = d3.line()
-        .x(function(d) { return xScale(d.frame); })
-        .y(function(d) { return yScale(d.reward); });
+    // Lines preparation
+    const line = d3.line()
+    .x(function(d) { return xScale(d.frame); })
+    .y(function(d) { return yScale(d.reward); });
 
 
     this.draw = function() {

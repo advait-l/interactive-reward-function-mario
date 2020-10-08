@@ -6,7 +6,6 @@ function CoinPlot() {
 
     coindata = [];
 
-
     // Append SVG attributes
     var svg2 = d3.select(".svg-container").append("svg")
        .attr("width", width1 + margin1.left + margin1.right)
