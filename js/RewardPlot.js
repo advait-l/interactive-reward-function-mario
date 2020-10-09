@@ -41,7 +41,6 @@ function RewardPlot() {
             reward: reward[i]
         });
     }
-    console.log(rewarddata);
 
     /* PREPARATION */
     // Scale preparation

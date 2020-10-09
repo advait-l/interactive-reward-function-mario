@@ -4,10 +4,7 @@ function CoinPlot() {
        width1 = 375 - margin1.left - margin1.right,
        height1 = 250 - margin1.top - margin1.bottom;
 
-    coindata = [{
-        frame: 0,
-        coins: 0
-    }];
+    coindata = [];
 
     // Append SVG attributes
     var svg2 = d3.select(".svg-container").append("svg")
@@ -22,7 +19,6 @@ function CoinPlot() {
 
     this.setData = function(dataFromGame) {
         coindata.push(dataFromGame);
-        console.log(coindata);
     }
 
         // Data preparation
@@ -35,7 +31,6 @@ function CoinPlot() {
                     coins: coins[i]
                 });
             }
-            console.log(coindata);
 
         /* PREPARATION */
         // Scale preparation

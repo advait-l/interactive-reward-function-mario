@@ -226,6 +226,18 @@ function MarioGame() {
 
     that.renderMap();
 
+    // Visualization 
+    var coins = { frame: loopCount, coins: score.coinScore };
+    coinPlot.setData(coins);
+    //console.log(coins);
+
+    /* Mario agent */
+    // As an input to the mario agent, provide the mario instance itself, the current levelmap and the locations of the goombas, powerups and bullets.
+    marioAgent.processInputs(mario, map, powerUps, goombas);
+    //marioAgent.stepLearn();
+    marioAgent.setKeys(keys, mario.x);
+
+    /* Main game updates */
     for (var i = 0; i < powerUps.length; i++) {
       powerUps[i].draw();
       powerUps[i].update();
@@ -241,12 +253,6 @@ function MarioGame() {
       goombas[i].update();
     }
 
-    var coins = { frame: loopCount, coins: score.coinScore };
-    coinPlot.setData(coins);
-    //coinPlot.draw();
-    marioAgent.setInputs(coins);
-    
-
     that.checkPowerUpMarioCollision();
     that.checkBulletEnemyCollision();
     that.checkEnemyMarioCollision();
@@ -255,21 +261,6 @@ function MarioGame() {
     that.updateMario();
     that.wallCollision();
     marioInGround = mario.grounded; //for use with flag sliding
-
-    marioAgent.setKeys(keys, mario.x);
-    //console.log(score.coinScore);
-    //console.log(loopCount);
-
-
-    
-    //that.coinPlot.draw(coins);
-    //console.log(coinData);
-    //console.log(that.coinPlot);
-    //that.coinPlot.setData({
-    //    frame: loopCount,
-    //    coins: score.coinScore
-    //});
-
 
   };
 

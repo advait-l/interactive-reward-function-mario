@@ -1,13 +1,15 @@
 function MarioAgent(){
 
-    this.inputs;
+    var inputs;
+    var academy;
+    var teacher;
+    var agent;
     
     var that = this;
     var i = 0
 
     this.init = function() {
         
-        that.inputs = []
 
         console.log("Mario agent initialised")
         const modelFitConfig = {              // Exactly the same idea here by using tfjs's model's
@@ -16,7 +18,7 @@ function MarioAgent(){
         };
 
         const numActions = 6;                 // The number of actions your agent can choose to do
-        const inputSize = 100;                // Inputs size (10x10 image for instance)
+        const inputSize = 1810;                // Inputs size (10x10 image for instance)
         const temporalWindow = 1;             // The window of data which will be sent yo your agent
                                               // For instance the x previous inputs, and what actions the agent took
 
@@ -58,50 +60,93 @@ function MarioAgent(){
             }
         };
 
-        const academy = new ReImprove.Academy();    // First we need an academy to host everything
-        const teacher = academy.addTeacher(teacherConfig);
-        const agent = academy.addAgent(agentConfig);
+        this.academy = new ReImprove.Academy();    // First we need an academy to host everything
+        this.teacher = this.academy.addTeacher(teacherConfig);
+        this.agent = this.academy.addAgent(agentConfig);
 
-        academy.assignTeacherToAgent(agent, teacher);
+        this.academy.assignTeacherToAgent(this.agent, this.teacher);
 
     }
 
-    this.setInputs = function(data) {
-        that.inputs.push(data)        
-        //console.log("Inputs set: ", data)
+    this.processInputs = function(mario, map, powerUps, goombas) {
+
+        that.inputs = [];
+        
+        /* Process all the inputs */
+        // Mario object
+        that.inputs.push(mario.x);
+        that.inputs.push(mario.y);
+
+        // Level map
+        that.inputs.push(map);
+
+        // Powerup locations
+        for(let i = 0; i < powerUps.length; i++){
+            that.inputs.push(powerUps[i].x);
+            that.inputs.push(powerUps[i].y);
+        }
+
+        // Goombas locations
+        for(let i = 0; i < goombas.length; i++){
+            that.inputs.push(goombas[i].x);
+            that.inputs.push(goombas[i].y);
+        }
+
+        console.log("Input length: ", that.inputs.length);
+        console.log("Mario: ", mario.x, mario.y);
+        console.log("Map: ", map);
+        console.log("Number of Powerups: ", powerUps.length);
+        console.log("Number of enemies: ", goombas.length);
+
+
     }
+
 
     this.setKeys = function(keys, d){
-        if(i%2 == 0){
+        if(i%100 == 0){
+            // shift key
+            keys[16] = true;
+            // up arrow
             keys[38] = true;
-            keys[39] = false;
-            i = 1;        
+            // right arrow
+            keys[39] = true;
+            i += 1;        
         }
-        else if(i%2 == 1){
+        else if(i%100 == 50){
+            keys[16] = true;
+            // left arrow
+            keys[37] = true;
+            keys[39] = false;
+            i += 1;
+        }
+        else {
+            keys[16] = true;
+            keys[37] = false;
+            keys[16] = false;
             keys[39] = true;
             keys[38] = false;
-            i = 0;
+            i += 1;
         }
-        console.log(d)
     }
 
     // Nice event occuring during world emulation
     function OnSpecialGoodEvent() {
-        academy.addRewardToAgent(agent, 1.0)        // Give a nice reward if the agent did something nice !
+        this.academy.addRewardToAgent(this.agent, 1.0)        // Give a nice reward if the agent did something nice !
     }
 
     // Bad event
     function OnSpecialBadEvent() {
-        academy.addRewardToAgent(agent, -1.0)        // Give a bad reward to the agent if he did something wrong
+        this.academy.addRewardToAgent(this.agent, -1.0)        // Give a bad reward to the agent if he did something wrong
     }
 
     // Animation loop, update loop, whatever loop you want
-    async function step(time) {
+    this.stepLearn = async function() {
 
-        let inputs = getInputs();          // Need to give a number[] of your inputs for one teacher.
-        await academy.step([               // Let the magic operate ...
-            {teacherName: teacher, agentsInput: inputs}
+    // Need to give a number[] of your inputs for one teacher.
+        let result = await this.academy.step([               // Let the magic operate ...
+            {teacherName: this.teacher, agentsInput: this.inputs}
         ]);
+        console.log(result);
 
     }
 

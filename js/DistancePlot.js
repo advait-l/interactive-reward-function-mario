@@ -29,7 +29,6 @@ function DistancePlot() {
                     distance: distance[i]
                 });
             }
-            console.log(distancedata);
 
         /* PREPARATION */
         // Scale preparation
