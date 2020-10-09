@@ -4,7 +4,10 @@ function CoinPlot() {
        width1 = 375 - margin1.left - margin1.right,
        height1 = 250 - margin1.top - margin1.bottom;
 
-    coindata = [];
+    coindata = [{
+        frame: 0,
+        coins: 0
+    }];
 
     // Append SVG attributes
     var svg2 = d3.select(".svg-container").append("svg")
@@ -17,6 +20,10 @@ function CoinPlot() {
           "translate(" + margin1.left + "," + margin1.top + ")");
 
 
+    this.setData = function(dataFromGame) {
+        coindata.push(dataFromGame);
+        console.log(coindata);
+    }
 
         // Data preparation
             var frames = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

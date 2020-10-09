@@ -20,6 +20,16 @@ function MarioGame() {
   var gameSound;
   var score;
 
+  // Mario agent
+  var marioAgent;
+
+  // Visualizations
+  var loopCount = 0;
+  var coinPlot;
+  var enemyKillPlot;
+  var distancePlot;
+  var rewardPlot;
+
   var keys = [];
   var goombas;
   var powerUps;
@@ -36,12 +46,6 @@ function MarioGame() {
   var instructionTick = 0; //showing instructions counter
   var that = this;
 
-  // Visulizations
-  var loopCount = 0;
-  var coinPlot;
-  var enemyKillPlot;
-  var distancePlot;
-  var rewardPlot;
 
   this.init = function(levelMaps, level) {
     height = 480;
@@ -81,10 +85,13 @@ function MarioGame() {
     gameSound = new GameSound();
     gameSound.init();
 
-    that.calculateMaxWidth();
-    that.bindKeyPress();
-    that.startGame();
+    // Mario agent initialization
+    if(!marioAgent){
+        marioAgent = new MarioAgent();
+        marioAgent.init();
+    }
 
+    // Plots initialised
     if(!coinPlot){
         coinPlot = new CoinPlot();
         coinPlot.draw();
@@ -104,6 +111,11 @@ function MarioGame() {
         rewardPlot = new RewardPlot();
         rewardPlot.draw();
     }
+
+    that.calculateMaxWidth();
+    that.bindKeyPress();
+    that.startGame();
+
   };
 
   that.calculateMaxWidth = function() {
@@ -229,6 +241,12 @@ function MarioGame() {
       goombas[i].update();
     }
 
+    var coins = { frame: loopCount, coins: score.coinScore };
+    coinPlot.setData(coins);
+    //coinPlot.draw();
+    marioAgent.setInputs(coins);
+    
+
     that.checkPowerUpMarioCollision();
     that.checkBulletEnemyCollision();
     that.checkEnemyMarioCollision();
@@ -238,9 +256,11 @@ function MarioGame() {
     that.wallCollision();
     marioInGround = mario.grounded; //for use with flag sliding
 
+    marioAgent.setKeys(keys, mario.x);
     //console.log(score.coinScore);
     //console.log(loopCount);
-    var coins = { frame: loopCount, coins: score.coinScore };
+
+
     
     //that.coinPlot.draw(coins);
     //console.log(coinData);
@@ -884,6 +904,17 @@ function MarioGame() {
     that.clearInstances();
     that.init(originalMaps, currentLevel);
   };
+
+  this.resetAgent = function() {
+    console.log("Agent has been reset")
+    that.clearInstances();
+    loopCount = 0;
+    marioAgent = null;
+    coinPlot = null;
+    rewardPlot = null;
+    enemyKillPlot = null;
+    distancePlot = null;
+  }
 
   this.clearInstances = function() {
     mario = null;

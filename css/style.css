@@ -383,7 +383,7 @@
 
 /* axis text */
 .axis text {
-    fill: #2b2929;
-    font-family: Georgia;
-    font-size: 120%;
+    fill: #fff;
+    font-family: SuperMario256;
+    font-size: 100%;
 }
