@@ -4,21 +4,22 @@ function MarioAgent(){
     var academy;
     var teacher;
     var agent;
+
+    var keys;
     
     var that = this;
     var i = 0
 
     this.init = function() {
         
-
         console.log("Mario agent initialised")
         const modelFitConfig = {              // Exactly the same idea here by using tfjs's model's
             epochs: 1,                        // fit config.
             stepsPerEpoch: 16
         };
 
-        const numActions = 6;                 // The number of actions your agent can choose to do
-        const inputSize = 1810;                // Inputs size (10x10 image for instance)
+        const numActions = 4;                 // The number of actions your agent can choose to do
+        const inputSize = 14;                // Inputs size (10x10 image for instance)
         const temporalWindow = 1;             // The window of data which will be sent yo your agent
                                               // For instance the x previous inputs, and what actions the agent took
 
@@ -54,7 +55,7 @@ function MarioAgent(){
         const agentConfig = {
             model: model,                          // Our model corresponding to the agent
             agentConfig: {
-                memorySize: 5000,                      // The size of the agent's memory (Q-Learning)
+                memorySize: 50000,                      // The size of the agent's memory (Q-Learning)
                 batchSize: 128,                        // How many tensors will be given to the network when fit
                 temporalWindow: temporalWindow         // The temporal window giving previous inputs & actions
             }
@@ -78,7 +79,7 @@ function MarioAgent(){
         that.inputs.push(mario.y);
 
         // Level map
-        that.inputs.push(map);
+        //that.inputs.push(map);
 
         // Powerup locations
         for(let i = 0; i < powerUps.length; i++){
@@ -92,40 +93,96 @@ function MarioAgent(){
             that.inputs.push(goombas[i].y);
         }
 
-        console.log("Input length: ", that.inputs.length);
-        console.log("Mario: ", mario.x, mario.y);
-        console.log("Map: ", map);
-        console.log("Number of Powerups: ", powerUps.length);
+        //console.log("Input length: ", that.inputs.length);
+        //console.log("Mario: ", mario.x, mario.y);
+        //console.log("Map: ", map);
+        //console.log("Number of Powerups: ", powerUps.length);
         console.log("Number of enemies: ", goombas.length);
 
 
     }
 
+    this.setKeys = function(keys) {
+        this.keys = keys;
+    }
 
-    this.setKeys = function(keys, d){
-        if(i%100 == 0){
-            // shift key
-            keys[16] = true;
-            // up arrow
-            keys[38] = true;
-            // right arrow
-            keys[39] = true;
-            i += 1;        
-        }
-        else if(i%100 == 50){
-            keys[16] = true;
-            // left arrow
-            keys[37] = true;
-            keys[39] = false;
-            i += 1;
-        }
-        else {
-            keys[16] = true;
-            keys[37] = false;
-            keys[16] = false;
-            keys[39] = true;
-            keys[38] = false;
-            i += 1;
+    this.resetKeys = function() {
+        this.keys[16] = false;
+        this.keys[17] = false;
+        this.keys[37] = false;
+        this.keys[38] = false;
+        this.keys[39] = false;
+    }
+
+    this.pressUpArrow = function() {
+        this.resetKeys();
+        this.keys[38] = true;
+    }
+
+    this.pressRightArrow = function() {
+        this.resetKeys();
+        this.keys[39] = true;
+    }
+
+    this.pressLeftArrow = function() {
+        this.resetKeys();
+        this.keys[37] = true;
+    }
+    this.pressShift = function() {
+        this.resetKeys();
+        this.keys[16] = true;
+    }
+    this.pressControl = function() {
+        this.resetKeys();
+        this.keys[17] = true;
+    }
+
+
+    /* Animation loop, update loop, whatever loop you want */
+    this.stepLearn = async function() {
+    // Need to give a number[] of your inputs for one teacher.
+
+        // Do the pre calculation
+
+        // Step the learning process
+        let result = await this.academy.step([               // Let the magic operate ...
+            {teacherName: this.teacher, agentsInput: this.inputs}
+        ]);
+
+        // Take actions
+        if(result != undefined){
+            
+            var action = result.get(this.agent);
+
+            // Press up arrow
+            if(action === 0){
+                //console.log("Pressed up key");
+                this.pressUpArrow();
+            }
+
+            // Press right arrow
+            if(action === 1){
+                //console.log("Pressed right key");
+                this.pressRightArrow();
+            }
+
+            // Press left arrow
+            if(action === 2){
+                //console.log("Pressed left key");
+                this.pressLeftArrow();
+            }
+
+            // Press shift
+            if(action === 3){
+                //console.log("Pressed shift key");
+                this.pressShift();
+            }
+
+            // Press control
+            if(action === 4){
+                //console.log("Pressed control key");
+                this.pressControl();
+            }
         }
     }
 
@@ -139,16 +196,34 @@ function MarioAgent(){
         this.academy.addRewardToAgent(this.agent, -1.0)        // Give a bad reward to the agent if he did something wrong
     }
 
-    // Animation loop, update loop, whatever loop you want
-    this.stepLearn = async function() {
-
-    // Need to give a number[] of your inputs for one teacher.
-        let result = await this.academy.step([               // Let the magic operate ...
-            {teacherName: this.teacher, agentsInput: this.inputs}
-        ]);
-        console.log(result);
-
+    var marioX, marioY;
+    var coins;
+    // Get the distance, coins collected etc. metrics to give reward to the agent
+    this.getMetrics = function(mario, score) {
+        //console.log("Mario x before ", mario.x);
+        this.marioX = mario.x;
+        this.marioY = mario.y;
+        this.coins = score.coinScore;        
     }
 
-    // Request animation frame loop
+    var distanceWeight = 1.0;
+    var coinWeight = 5.0;
+    // Compute and give the reward for the mario agent
+    this.giveRewards = function(mario, score) {
+        //console.log("Mario x after ", mario.x);
+        var distance = mario.x - this.marioX;
+        var coinsCollected = score.coinScore - this.coins;
+        
+        //console.log("Distance", distance);
+        //console.log("Distance weight", distanceWeight);
+
+        var distanceReward = distanceWeight * distance;
+        this.academy.addRewardToAgent(this.agent, distanceReward);
+
+        var coinReward = coinWeight * coinsCollected;
+        this.academy.addRewardToAgent(this.agent, coinReward);
+
+        console.log("Distance reward: ", distanceReward);
+        console.log("Coin reward :", coinReward);
+    }
 }

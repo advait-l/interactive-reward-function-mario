@@ -234,8 +234,15 @@ function MarioGame() {
     /* Mario agent */
     // As an input to the mario agent, provide the mario instance itself, the current levelmap and the locations of the goombas, powerups and bullets.
     marioAgent.processInputs(mario, map, powerUps, goombas);
-    //marioAgent.stepLearn();
-    marioAgent.setKeys(keys, mario.x);
+
+    // Compute the metrics before the step 
+    marioAgent.getMetrics(mario, score);
+
+    // Step the learning process and take actions
+    marioAgent.setKeys(keys);
+    marioAgent.stepLearn();
+
+
 
     /* Main game updates */
     for (var i = 0; i < powerUps.length; i++) {
@@ -261,6 +268,9 @@ function MarioGame() {
     that.updateMario();
     that.wallCollision();
     marioInGround = mario.grounded; //for use with flag sliding
+
+    // Set rewards
+    marioAgent.giveRewards(mario, score)
 
   };
 
@@ -699,6 +709,7 @@ function MarioGame() {
           that.gameOver();
         } else {
           that.resetGame();
+          that.resetAgent();
         }
       }, 3000);
     }
@@ -898,13 +909,13 @@ function MarioGame() {
 
   this.resetAgent = function() {
     console.log("Agent has been reset")
-    that.clearInstances();
     loopCount = 0;
     marioAgent = null;
     coinPlot = null;
     rewardPlot = null;
     enemyKillPlot = null;
     distancePlot = null;
+    that.marioAgent.init();
   }
 
   this.clearInstances = function() {
