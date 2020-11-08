@@ -6,6 +6,8 @@ function MarioAgent(){
     var agent;
 
     var keys;
+
+    var gameMetricsPanel;
     
     var that = this;
     var i = 0
@@ -18,8 +20,8 @@ function MarioAgent(){
             stepsPerEpoch: 16
         };
 
-        const numActions = 4;                 // The number of actions your agent can choose to do
-        const inputSize = 14;                // Inputs size (10x10 image for instance)
+        const numActions = 10;                 // The number of actions your agent can choose to do
+        const inputSize = 10;                // Inputs size (10x10 image for instance)
         const temporalWindow = 1;             // The window of data which will be sent yo your agent
                                               // For instance the x previous inputs, and what actions the agent took
 
@@ -67,37 +69,43 @@ function MarioAgent(){
 
         this.academy.assignTeacherToAgent(this.agent, this.teacher);
 
+
+        // Game metrics panel
+        if(!gameMetricsPanel){
+            this.gameMetricsPanel = new GameMetricsPanel();
+            this.gameMetricsPanel.init();
+        }
     }
 
     this.processInputs = function(mario, map, powerUps, goombas) {
 
-        that.inputs = [];
+        this.inputs = [];
         
         /* Process all the inputs */
         // Mario object
-        that.inputs.push(mario.x);
-        that.inputs.push(mario.y);
+        this.inputs.push(mario.x);
+        this.inputs.push(mario.y);
 
         // Level map
         //that.inputs.push(map);
 
         // Powerup locations
-        for(let i = 0; i < powerUps.length; i++){
-            that.inputs.push(powerUps[i].x);
-            that.inputs.push(powerUps[i].y);
-        }
+        //for(let i = 0; i < powerUps.length; i++){
+        //    this.inputs.push(powerUps[i].x);
+        //    this.inputs.push(powerUps[i].y);
+        //}
 
         // Goombas locations
         for(let i = 0; i < goombas.length; i++){
-            that.inputs.push(goombas[i].x);
-            that.inputs.push(goombas[i].y);
+            this.inputs.push(goombas[i].x);
+            this.inputs.push(goombas[i].y);
         }
 
-        //console.log("Input length: ", that.inputs.length);
+        console.log("Input length: ", that.inputs.length);
         //console.log("Mario: ", mario.x, mario.y);
         //console.log("Map: ", map);
         //console.log("Number of Powerups: ", powerUps.length);
-        console.log("Number of enemies: ", goombas.length);
+        //console.log("Number of enemies: ", goombas.length);
 
 
     }
@@ -114,20 +122,66 @@ function MarioAgent(){
         this.keys[39] = false;
     }
 
+    // Shift-Up
+    this.pressShiftUp = function() {
+        this.resetKeys();
+        this.keys[16] = true;
+        this.keys[38] = true;
+    }
+    // Shift-Right
+    this.pressShiftRight = function() {
+        this.resetKeys();
+        this.keys[16] = true;
+        this.keys[39] = true;
+    }
+    // Shift-Left
+    this.pressShiftLeft = function() {
+        this.resetKeys();
+        this.keys[16] = true;
+        this.keys[37] = true;
+    }
+    // Shift-Up-Right
+    this.pressShiftUpRight = function() {
+        this.resetKeys();
+        this.keys[16] = true;
+        this.keys[38] = true;
+        this.keys[39] = true;
+    }
+    // Shift-Up-Left
+    this.pressShiftUpLeft = function() {
+        this.resetKeys();
+        this.keys[16] = true;
+        this.keys[37] = true;
+        this.keys[38] = true;
+    }
+    // Up-Right
+    this.pressUpRight = function() {
+        this.resetKeys();
+        this.keys[38] = true;
+        this.keys[39] = true;
+    }
+    // Up-Left
+    this.pressUpLeft = function() {
+        this.resetKeys();
+        this.keys[37] = true;
+        this.keys[38] = true;
+    }
+    // Up
     this.pressUpArrow = function() {
         this.resetKeys();
         this.keys[38] = true;
     }
-
+    // Right
     this.pressRightArrow = function() {
         this.resetKeys();
         this.keys[39] = true;
     }
-
+    // Left
     this.pressLeftArrow = function() {
         this.resetKeys();
         this.keys[37] = true;
     }
+    // Shift
     this.pressShift = function() {
         this.resetKeys();
         this.keys[16] = true;
@@ -163,26 +217,57 @@ function MarioAgent(){
             // Press right arrow
             if(action === 1){
                 //console.log("Pressed right key");
-                this.pressRightArrow();
+                this.pressLeftArrow();
             }
 
             // Press left arrow
             if(action === 2){
                 //console.log("Pressed left key");
-                this.pressLeftArrow();
+                this.pressRightArrow();
             }
 
-            // Press shift
+            // Press up-left
             if(action === 3){
                 //console.log("Pressed shift key");
-                this.pressShift();
+                this.pressUpLeft();
             }
 
-            // Press control
+            // Press up-right
             if(action === 4){
                 //console.log("Pressed control key");
-                this.pressControl();
+                this.pressUpRight();
             }
+
+            // Press shift-up arrow
+            if(action === 5){
+                //console.log("Pressed up key");
+                this.pressShiftUp();
+            }
+
+            // Press shift-right arrow
+            if(action === 6){
+                //console.log("Pressed right key");
+                this.pressShiftRight();
+            }
+
+            // Press shift-left arrow
+            if(action === 7){
+                //console.log("Pressed left key");
+                this.pressShiftLeft();
+            }
+
+            // Press shift-up-left
+            if(action === 8){
+                //console.log("Pressed shift key");
+                this.pressShiftUpLeft();
+            }
+
+            // Press shift-up-right
+            if(action === 9){
+                //console.log("Pressed control key");
+                this.pressShiftUpRight();
+            }
+            
         }
     }
 
@@ -206,8 +291,8 @@ function MarioAgent(){
         this.coins = score.coinScore;        
     }
 
-    var distanceWeight = 1.0;
-    var coinWeight = 5.0;
+    var distanceWeight = 10.0;
+    var coinWeight = 50.0;
     // Compute and give the reward for the mario agent
     this.giveRewards = function(mario, score) {
         //console.log("Mario x after ", mario.x);

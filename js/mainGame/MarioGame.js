@@ -92,25 +92,25 @@ function MarioGame() {
     }
 
     // Plots initialised
-    if(!coinPlot){
-        coinPlot = new CoinPlot();
-        coinPlot.draw();
-    }
-    
-    if(!enemyKillPlot){
-        enemyKillPlot = new EnemyKillPlot();
-        enemyKillPlot.draw();
-    }
+    //if(!coinPlot){
+    //    coinPlot = new CoinPlot();
+    //    coinPlot.draw();
+    //}
+    //
+    //if(!enemyKillPlot){
+    //    enemyKillPlot = new EnemyKillPlot();
+    //    enemyKillPlot.draw();
+    //}
 
-    if(!distancePlot){
-        distancePlot = new DistancePlot();
-        distancePlot.draw();
-    }
+    //if(!distancePlot){
+    //    distancePlot = new DistancePlot();
+    //    distancePlot.draw();
+    //}
 
-    if(!rewardPlot){
-        rewardPlot = new RewardPlot();
-        rewardPlot.draw();
-    }
+    //if(!rewardPlot){
+    //    rewardPlot = new RewardPlot();
+    //    rewardPlot.draw();
+    //}
 
     that.calculateMaxWidth();
     that.bindKeyPress();
@@ -228,7 +228,7 @@ function MarioGame() {
 
     // Visualization 
     var coins = { frame: loopCount, coins: score.coinScore };
-    coinPlot.setData(coins);
+    //coinPlot.setData(coins);
     //console.log(coins);
 
     /* Mario agent */
