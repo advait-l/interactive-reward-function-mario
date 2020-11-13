@@ -51,8 +51,11 @@ var MarioMaker = (function() {
       view.addClass(backToMenuBtn, 'back-btn');
 
       // Visualizations
+      metricWrapper = view.create('div');
+      view.addClass(metricWrapper, 'metric-wrapper');
       svgContainer = view.create('div');
       view.addClass(svgContainer, 'svg-container');
+
 
       view.append(startScreen, editorButton);
       view.append(startScreen, startGameButton);
@@ -60,6 +63,7 @@ var MarioMaker = (function() {
       view.append(btnWrapper, backToMenuBtn);
       view.append(mainWrapper, startScreen);
       view.append(mainWrapper, btnWrapper);
+      view.append(mainWrapper, metricWrapper);
       view.append(mainWrapper, svgContainer);
 
       editorButton.onclick = that.startEditor;
@@ -89,6 +93,7 @@ var MarioMaker = (function() {
     this.startGame = function(levelMap) {
       view.style(backToMenuBtn, { display: 'block' });
       view.style(svgContainer, {display: 'block'});
+      view.style(metricWrapper, {display: 'inline-block'});
 
       marioGame.clearInstances();
       marioGame.init(levelMap, 1); //initiate level 1 of map

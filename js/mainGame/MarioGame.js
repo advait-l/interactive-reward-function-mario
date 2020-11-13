@@ -219,10 +219,10 @@ function MarioGame() {
 
     gameUI.clear(0, 0, maxWidth, height);
 
-    if (instructionTick < 1000) {
-      that.showInstructions(); //showing control instructions
-      instructionTick++;
-    }
+    //if (instructionTick < 1000) {
+    //  that.showInstructions(); //showing control instructions
+    //  instructionTick++;
+    //}
 
     that.renderMap();
 
@@ -232,6 +232,7 @@ function MarioGame() {
     //console.log(coins);
 
     /* Mario agent */
+    console.log("Agent Status: ", marioAgent.agentStatus);
     // As an input to the mario agent, provide the mario instance itself, the current levelmap and the locations of the goombas, powerups and bullets.
     marioAgent.processInputs(mario, map, powerUps, goombas);
 
@@ -239,8 +240,12 @@ function MarioGame() {
     marioAgent.getMetrics(mario, score);
 
     // Step the learning process and take actions
-    marioAgent.setKeys(keys);
     marioAgent.stepLearn();
+    marioAgent.setKeys(keys);
+
+    if(marioAgent.agentStatus === true){
+        console.log("Mario is training");
+    }
 
 
 
@@ -270,7 +275,7 @@ function MarioGame() {
     marioInGround = mario.grounded; //for use with flag sliding
 
     // Set rewards
-    marioAgent.giveRewards(mario, score)
+    marioAgent.giveRewards(mario, score);
 
   };
 

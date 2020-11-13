@@ -4,6 +4,7 @@ function MarioAgent(){
     var academy;
     var teacher;
     var agent;
+    var agentStatus;
 
     var keys;
 
@@ -66,6 +67,7 @@ function MarioAgent(){
         this.academy = new ReImprove.Academy();    // First we need an academy to host everything
         this.teacher = this.academy.addTeacher(teacherConfig);
         this.agent = this.academy.addAgent(agentConfig);
+        this.agentStatus = true;
 
         this.academy.assignTeacherToAgent(this.agent, this.teacher);
 
@@ -101,7 +103,7 @@ function MarioAgent(){
             this.inputs.push(goombas[i].y);
         }
 
-        console.log("Input length: ", that.inputs.length);
+        //console.log("Input length: ", that.inputs.length);
         //console.log("Mario: ", mario.x, mario.y);
         //console.log("Map: ", map);
         //console.log("Number of Powerups: ", powerUps.length);
@@ -271,15 +273,6 @@ function MarioAgent(){
         }
     }
 
-    // Nice event occuring during world emulation
-    function OnSpecialGoodEvent() {
-        this.academy.addRewardToAgent(this.agent, 1.0)        // Give a nice reward if the agent did something nice !
-    }
-
-    // Bad event
-    function OnSpecialBadEvent() {
-        this.academy.addRewardToAgent(this.agent, -1.0)        // Give a bad reward to the agent if he did something wrong
-    }
 
     var marioX, marioY;
     var coins;
@@ -289,18 +282,21 @@ function MarioAgent(){
         this.marioX = mario.x;
         this.marioY = mario.y;
         this.coins = score.coinScore;        
+        this.agentStatus = this.gameMetricsPanel.checkAgentStatus();
+        //console.log(this.agentStatus);
     }
 
-    var distanceWeight = 10.0;
-    var coinWeight = 50.0;
     // Compute and give the reward for the mario agent
     this.giveRewards = function(mario, score) {
+        var distanceWeight = this.gameMetricsPanel.getDistanceWeight();
+        var coinWeight = this.gameMetricsPanel.getCoinWeight();
         //console.log("Mario x after ", mario.x);
         var distance = mario.x - this.marioX;
         var coinsCollected = score.coinScore - this.coins;
         
         //console.log("Distance", distance);
-        //console.log("Distance weight", distanceWeight);
+        console.log("Distance weight", distanceWeight);
+        console.log("Coin weight", coinWeight);
 
         var distanceReward = distanceWeight * distance;
         this.academy.addRewardToAgent(this.agent, distanceReward);
@@ -308,7 +304,7 @@ function MarioAgent(){
         var coinReward = coinWeight * coinsCollected;
         this.academy.addRewardToAgent(this.agent, coinReward);
 
-        console.log("Distance reward: ", distanceReward);
-        console.log("Coin reward :", coinReward);
+        //console.log("Distance reward: ", distanceReward);
+        //console.log("Coin reward :", coinReward);
     }
 }
