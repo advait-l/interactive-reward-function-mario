@@ -25,6 +25,7 @@ function MarioGame() {
 
   // Visualizations
   var loopCount = 0;
+  var drawStatus = false;
   var coinPlot;
   var enemyKillPlot;
   var distancePlot;
@@ -92,25 +93,23 @@ function MarioGame() {
     }
 
     // Plots initialised
-    //if(!coinPlot){
-    //    coinPlot = new CoinPlot();
-    //    coinPlot.draw();
-    //}
-    //
-    //if(!enemyKillPlot){
-    //    enemyKillPlot = new EnemyKillPlot();
-    //    enemyKillPlot.draw();
-    //}
+    if(!coinPlot){
+        coinPlot = new CoinPlot();
+        coinPlot.draw();
+    }
+    
+    if(!enemyKillPlot){
+    }
 
-    //if(!distancePlot){
-    //    distancePlot = new DistancePlot();
-    //    distancePlot.draw();
-    //}
+    if(!distancePlot){
+        distancePlot = new DistancePlot();
+        distancePlot.draw();
+    }
 
-    //if(!rewardPlot){
-    //    rewardPlot = new RewardPlot();
-    //    rewardPlot.draw();
-    //}
+    if(!rewardPlot){
+        rewardPlot = new RewardPlot();
+        rewardPlot.draw();
+    }
 
     that.calculateMaxWidth();
     that.bindKeyPress();
@@ -243,7 +242,7 @@ function MarioGame() {
     marioAgent.stepLearn();
     marioAgent.setKeys(keys);
 
-    if(marioAgent.agentStatus === true){
+    if(marioAgent.gameMetricsPanel.agentStatus){
         console.log("Mario is training");
     }
 
@@ -275,7 +274,8 @@ function MarioGame() {
     marioInGround = mario.grounded; //for use with flag sliding
 
     // Set rewards
-    marioAgent.giveRewards(mario, score);
+    if(marioAgent.gameMetricsPanel.agentStatus)
+        marioAgent.giveRewards(mario, score);
 
   };
 

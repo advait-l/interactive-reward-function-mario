@@ -386,10 +386,39 @@
     font-size: 120%;
 }
 
+/* Metric wrapper */
+.metric-wrapper {
+    margin: 10px;
+}
+
+.metric-wrapper p{
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+}
+
+.metric-wrapper .play-button{
+    margin-left: 20px;
+    margin-bottom: 10px;
+    background: green;
+    padding: 5px;
+    font-family: SuperMario256;
+    color: #fff;
+}
+.metric-wrapper .pause-button{
+    margin-left: 20px;
+    margin-bottom: 10px;
+    background: red;
+    padding: 5px;
+    font-family: SuperMario256;
+    color: #fff;
+}
+
 /* Slider */
 .coinSlider {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
+  margin: 20px;
   width: 100%; /* Full-width */
   height: 25px; /* Specified height */
   background: #d3d3d3; /* Grey background */
@@ -429,6 +458,7 @@
 .slider {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
+  margin: 20px;
   width: 100%; /* Full-width */
   height: 25px; /* Specified height */
   background: #d3d3d3; /* Grey background */

@@ -1,10 +1,11 @@
 function GameMetricsPanel() {
 
     var metricWrapper;
-    var distanceWeight = 50.0;
+    var distanceWeight = 300.0;
     var coinWeight = 50.0;
 
     var agentStatus = false;
+    var drawStatus = false;
 
     this.init = function() {
         
@@ -15,7 +16,17 @@ function GameMetricsPanel() {
         this.createCoinSlider();
         this.createPlayButton();
         this.createPauseButton();
+        this.displayReward();
+        //this.checkDrawStatus();
         //this.createCoinSlider();
+    }
+
+    this.displayReward = function() {
+        var reward = document.createElement("p");
+        reward.className = "reward";
+        reward.innerHTML = "Reward function: Distance * Distance-weight + Coins * Coin-weight" ;
+        
+        document.getElementsByClassName("metric-wrapper")[0].appendChild(reward);
     }
 
     this.createPlayButton = function() {
@@ -44,6 +55,18 @@ function GameMetricsPanel() {
         return agentStatus;
     }
 
+    this.checkDrawStatus = function() {
+        var plot = document.createElement("button");
+        plot.className = "plot";
+        plot.innerHTML = "SHOW PLOTS";
+        document.getElementsByClassName("metric-wrapper")[0].appendChild(plot);
+
+        document.getElementsByClassName("plot")[0].onclick = function() {
+            console.log("Show plot button clicked!");
+            drawStatus = true;
+        }
+    }
+
     this.createCoinSlider = function() {
         var coinSlider = document.createElement("input");
         coinSlider.type = "range";
@@ -55,16 +78,16 @@ function GameMetricsPanel() {
 
         var coinOutput = document.createElement("p");
         coinOutput.className = "coinSlider-value";
-        coinOutput.innerHTML = coinSlider.value;
+        coinOutput.innerHTML = "Coins collected reward weight: " + coinSlider.value;
         
+        document.getElementsByClassName("metric-wrapper")[0].appendChild(coinOutput);
         document.getElementsByClassName("metric-wrapper")[0].appendChild(coinSlider);
-        document.getElementsByClassName("coinSlider")[0].appendChild(coinOutput);
         
 
         // Update the slider
         coinSlider.oninput = function() {
-            coinOutput.innerHTML = this.value;
-            coinWeight = this.value;
+            coinOutput.innerHTML = "Coins collected reward weight: " + this.value;
+            this.coinWeight = this.value;
         }
     }
 
@@ -75,20 +98,20 @@ function GameMetricsPanel() {
         slider.innerHTML = "Distance";
         slider.min = 0.0;
         slider.max = 1000.0;
-        slider.value = 50.0;
+        slider.value = 300.0;
 
         var output = document.createElement("p");
         output.className = "slider-value";
-        output.innerHTML = slider.value;
+        output.innerHTML = "Distance covered reward weight: " + slider.value;
         
+        document.getElementsByClassName("metric-wrapper")[0].appendChild(output);
         document.getElementsByClassName("metric-wrapper")[0].appendChild(slider);
-        document.getElementsByClassName("slider")[0].appendChild(output);
         
 
         // Update the slider
         slider.oninput = function() {
-            output.innerHTML = this.value;
-            distanceWeight = this.value;
+            output.innerHTML = "Distance covered reward weight: " + this.value;
+            this.distanceWeight = this.value;
         }
     }
 

@@ -25,13 +25,13 @@ function RewardPlot() {
     var enemies = [0, 0, 0, 0, 0, 1, 1, 2, 2, 2];
 
     // Weights
-    var Dweight = 1.0;
-    var Cweight = 5.0;
+    var Dweight = 300.0;
+    var Cweight = 50.0;
     var Eweight = 10.0;
 
     reward = [];
     for(let i = 0; i < frames.length; i++){
-        var rewardScore = Dweight * distance[i] + Cweight * coins[i] + Eweight * enemies[i];
+        var rewardScore = Dweight * distance[i] + Cweight * coins[i] ;
         reward.push(rewardScore);
     }
     //coindata.push(dataFromGame);

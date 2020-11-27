@@ -5,6 +5,7 @@ function MarioAgent(){
     var teacher;
     var agent;
     var agentStatus;
+    var drawStatus;
 
     var keys;
 
@@ -141,6 +142,7 @@ function MarioAgent(){
         this.resetKeys();
         this.keys[16] = true;
         this.keys[37] = true;
+        
     }
     // Shift-Up-Right
     this.pressShiftUpRight = function() {
@@ -261,7 +263,8 @@ function MarioAgent(){
             // Press shift-up-left
             if(action === 8){
                 //console.log("Pressed shift key");
-                this.pressShiftUpLeft();
+                //this.pressShiftUpLeft();
+                this.pressShiftUpRight();
             }
 
             // Press shift-up-right
